@@ -3,7 +3,7 @@ using BankingControlPanel.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Policy = "RequireAdminRole")]
 [Route("api/[controller]")]
 [ApiController]
 public class ClientsController : ControllerBase

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BankingControlPanel.Dtos;
 using BankingControlPanel.Helpers;
 using BankingControlPanel.Models;
+using System.Data;
 
 namespace BankingControlPanel.Controllers
 {
@@ -44,7 +45,8 @@ namespace BankingControlPanel.Controllers
             if (result.Succeeded)
             {
                 var appUser = await _userManager.FindByEmailAsync(model.Email);
-                var token = JwtTokenHelper.GenerateJwtToken(appUser, _configuration);
+                var roles = await _userManager.GetRolesAsync(appUser);
+                var token = JwtTokenHelper.GenerateJwtToken(appUser, _configuration, roles);
                 return Ok(new { token });
             }
 
