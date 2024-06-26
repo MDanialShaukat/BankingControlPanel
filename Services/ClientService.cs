@@ -2,6 +2,7 @@
 using BankingControlPanel.Data;
 using BankingControlPanel.Interfaces;
 using BankingControlPanel.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BankingControlPanel.Services
 {
@@ -32,7 +33,15 @@ namespace BankingControlPanel.Services
 
         public async Task<Client> UpdateClient(Client client)
         {
+            //update the client
             _context.Entry(client).State = EntityState.Modified;
+            // Update the address
+            _context.Entry(client.Address).State = EntityState.Modified;
+            // Update each account
+            foreach (var account in client.Accounts)
+            {
+                _context.Entry(account).State = EntityState.Modified;
+            }
             await _context.SaveChangesAsync();
             return client;
         }

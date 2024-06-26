@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using BankingControlPanel.Dtos;
 using BankingControlPanel.Helpers;
 using BankingControlPanel.Models;
-using System.Data;
 
 namespace BankingControlPanel.Controllers
 {
@@ -22,29 +21,37 @@ namespace BankingControlPanel.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Registration of a user
+        /// </summary>
+        /// <param name="model"></param>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password!);
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, model.Role);
+                await _userManager.AddToRoleAsync(user, model.Role!);
                 return Ok(new { result = "User created successfully" });
             }
 
             return BadRequest(result.Errors);
         }
 
+        /// <summary>
+        /// Login the user and gives the authentication token for next API calls
+        /// </summary>
+        /// <param name="model"></param>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, false, false);
 
             if (result.Succeeded)
             {
-                var appUser = await _userManager.FindByEmailAsync(model.Email);
+                var appUser = await _userManager.FindByEmailAsync(model.Email!);
                 var roles = await _userManager.GetRolesAsync(appUser);
                 var token = JwtTokenHelper.GenerateJwtToken(appUser, _configuration, roles);
                 return Ok(new { token });
