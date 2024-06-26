@@ -6,6 +6,9 @@ using BankingControlPanel.Models;
 
 namespace BankingControlPanel.Controllers
 {
+    /// <summary>
+    /// Contains endpoints for the management of User Login and Registration
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase

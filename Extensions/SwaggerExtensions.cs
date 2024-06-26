@@ -9,8 +9,10 @@ namespace BankingControlPanel.Extensions
         {
             services.AddSwaggerGen(options =>
             {
+                // Define the Swagger document with title and version
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "BankingControlPanel API", Version = "v1" });
 
+                // Add JWT Bearer authentication definition
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -20,6 +22,7 @@ namespace BankingControlPanel.Extensions
                     Scheme = "Bearer"
                 });
 
+                // Add security requirements to use the defined Bearer scheme
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                 {
