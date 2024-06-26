@@ -4,8 +4,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using BankingControlPanel.Extensions;
 using FluentValidation;
-using AutoMapper;
-using System.Reflection;
+using Health.Safety.API.Middlewares;
 
 public class Startup
 {
@@ -29,6 +28,7 @@ public class Startup
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseEndpoints(endpoints =>
         {
